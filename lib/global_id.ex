@@ -9,6 +9,7 @@
   @custom_epoch 1420070400000
 
   @doc """
+  Generates a unique global id.
   """
   @spec get_id() :: non_neg_integer
   def get_id() do
