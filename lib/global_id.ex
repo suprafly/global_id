@@ -49,7 +49,7 @@
   end
 
   @doc """
-  Returns timestamp in nanoseconds.
+  Returns custom timestamp in seconds.
   """
   @spec get_timestamp() :: non_neg_integer
   def get_timestamp() do
