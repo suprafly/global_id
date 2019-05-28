@@ -1,4 +1,4 @@
-# GlobalId
+# Global Id
 
 ## Explanation and Questions to consider
 
