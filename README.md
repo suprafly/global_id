@@ -4,9 +4,9 @@
 
 1-3) Please describe your solution to get_id and why it is correct i.e. guaranteed globally unique.
 
-My solution is based on an [interesting article](https://www.callicoder.com/distributed-unique-id-sequence-number-generator/) that implement a variant of the Twitter Snowflake algorithm. I found this to be a good starting point, but an insufficient solution.
+My solution is based on an [interesting article](https://www.callicoder.com/distributed-unique-id-sequence-number-generator/) that implements a variant of the Twitter Snowflake algorithm. I found this to be a good starting point, but an insufficient solution.
 
-The problem was that with the constraint of up to 100,000 requests per second the uniqueness started breaking down. The reason why this particular algorithm was insufficient is because the timestamp is unix epoch, meaning that it has a resolution in seconds. We could get hit with 100,000 requests, and there is no guarantee that these will be evenly distributed over a second interval. Therefore, in my tests which fire 100,000 requests in under a second (usually around ~ 0.6s) I found that some ids were duplicated.
+The problem was that with the constraint of up to 100,000 requests per second the uniqueness started breaking down. The reason why this particular algorithm was insufficient is because the timestamp is unix epoch, meaning that it has a resolution in seconds. We could get hit with 100,000 requests, and there is no guarantee that these will be evenly distributed over a second interval, even with a random sequence number. (I decided against a counter to keep my version stateless). Therefore, in my tests which fire 100,000 requests in under a second (usually around ~ 0.6s) I found that some ids were duplicated.
 
 A better solution was to use the Erlang `unique_integer` function to generate a unique, positive integer based on the current system runtime. In order to do this properly I needed to use 32 bits to get a number sufficiently large. I used another 10 bits for the node id. For remaining 22 bits I took the system time in second resolution and squashed it down into 22 bits.
 
